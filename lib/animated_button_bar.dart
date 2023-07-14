@@ -112,7 +112,6 @@ class _AnimatedButtonBarState extends State<AnimatedButtonBar> {
                                       child: Container(
                                         alignment: Alignment.topLeft,
                                         child: sideButton.child,
-                                        color: Colors.white,
                                       ),
                                     ),
                                     // child: Center(
