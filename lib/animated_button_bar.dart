@@ -48,7 +48,6 @@ class AnimatedButtonBar extends StatefulWidget {
 }
 
 class _AnimatedButtonBarState extends State<AnimatedButtonBar> {
-
   late AnimatedButtonController _controller;
   @override
   void initState() {
@@ -58,89 +57,84 @@ class _AnimatedButtonBarState extends State<AnimatedButtonBar> {
 
   @override
   Widget build(BuildContext context) {
-    Color backgroundColor =
-        widget.backgroundColor ?? Theme.of(context).colorScheme.background;
+    Color backgroundColor = widget.backgroundColor ?? Theme.of(context).colorScheme.background;
     return ChangeNotifierProvider(
       create: (context) => _controller,
-      child: Consumer<AnimatedButtonController>(
-        builder: (context, animatedButton, child) {
-          return Padding(
-            padding: widget.padding,
-            child: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-              return Card(
-                color: backgroundColor,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
-                    side: BorderSide(
-                      color: widget.borderColor ?? Colors.transparent,
-                      width: widget.borderWidth ??
-                          (widget.borderColor != null ? 1.0 : 0.0),
-                    )),
-                elevation: widget.elevation,
-                child: Stack(
-                  fit: StackFit.loose,
-                  children: [
-                    AnimatedPositioned(
-                      top: 0,
-                      bottom: 0,
-                      left: constraints.maxWidth / widget.children.length * animatedButton.index,
-                      right: (constraints.maxWidth / widget.children.length) *
-                          (widget.children.length - animatedButton.index - 1),
-                      duration: widget.animationDuration,
-                      curve: widget.curve,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color:
-                              widget.foregroundColor ?? Theme.of(context).colorScheme.secondary,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(widget.radius)),
-                        ),
+      child: Consumer<AnimatedButtonController>(builder: (context, animatedButton, child) {
+        return Padding(
+          padding: widget.padding,
+          child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+            return Card(
+              color: backgroundColor,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
+                  side: BorderSide(
+                    color: widget.borderColor ?? Colors.transparent,
+                    width: widget.borderWidth ?? (widget.borderColor != null ? 1.0 : 0.0),
+                  )),
+              elevation: widget.elevation,
+              child: Stack(
+                fit: StackFit.loose,
+                children: [
+                  AnimatedPositioned(
+                    top: 0,
+                    bottom: 0,
+                    left: constraints.maxWidth / widget.children.length * animatedButton.index,
+                    right: (constraints.maxWidth / widget.children.length) * (widget.children.length - animatedButton.index - 1),
+                    duration: widget.animationDuration,
+                    curve: widget.curve,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: widget.foregroundColor ?? Theme.of(context).colorScheme.secondary,
+                        borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
                       ),
                     ),
-                    Row(
-                      children: widget.children
-                          .asMap()
-                          .map((i, sideButton) => MapEntry(
-                                i,
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      try {
-                                        sideButton.onTap();
-                                      } catch (e) {
-                                        print('onTap implementation is missing');
-                                      }
-                                      animatedButton.setIndex(i);
-                                    },
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(widget.radius)),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: widget.innerVerticalPadding),
-                                      child: Center(
-                                          child: ColorFiltered(
-                                              colorFilter: ColorFilter.mode(
-                                                  backgroundColor,
-                                                  widget.invertedSelection &&
-                                                      animatedButton.index == i
-                                                      ? BlendMode.srcIn
-                                                      : BlendMode.dstIn),
-                                              child: sideButton.child)),
+                  ),
+                  Row(
+                    children: widget.children
+                        .asMap()
+                        .map((i, sideButton) => MapEntry(
+                              i,
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    try {
+                                      sideButton.onTap();
+                                    } catch (e) {
+                                      print('onTap implementation is missing');
+                                    }
+                                    animatedButton.setIndex(i);
+                                  },
+                                  borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: widget.innerVerticalPadding),
+                                    child: Center(
+                                      child: Container(
+                                        child: sideButton.child,
+                                      ),
                                     ),
+                                    // child: Center(
+                                    //     child: ColorFiltered(
+                                    //         colorFilter: ColorFilter.mode(
+                                    //             backgroundColor,
+                                    //             widget.invertedSelection &&
+                                    //                 animatedButton.index == i
+                                    //                 ? BlendMode.srcIn
+                                    //                 : BlendMode.dstIn),
+                                    //         child: sideButton.child)),
                                   ),
                                 ),
-                              ))
-                          .values
-                          .toList(),
-                    ),
-                  ],
-                ),
-              );
-            }),
-          );
-        }
-      ),
+                              ),
+                            ))
+                        .values
+                        .toList(),
+                  ),
+                ],
+              ),
+            );
+          }),
+        );
+      }),
     );
   }
 }
@@ -153,7 +147,6 @@ class ButtonBarEntry {
 
 ///controller for AnimatedButtonBar widget
 class AnimatedButtonController extends ChangeNotifier {
-
   int index = 0;
 
   ///change the index programmatically
