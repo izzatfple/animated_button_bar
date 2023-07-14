@@ -109,10 +109,7 @@ class _AnimatedButtonBarState extends State<AnimatedButtonBar> {
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(vertical: widget.innerVerticalPadding),
                                     child: Center(
-                                      child: Container(
-                                        alignment: Alignment.topLeft,
-                                        child: sideButton.child,
-                                      ),
+                                      child: Container(child: sideButton.child),
                                     ),
                                     // child: Center(
                                     //     child: ColorFiltered(
